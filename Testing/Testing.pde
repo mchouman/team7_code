@@ -70,7 +70,6 @@ void dataDisplay(){
   //text(String.format("%.1f",ph.get(ph.size()-1)), 135, 440);
   //text(stirSpeed.get(stirSpeed.size()-1), 135, 590);
   line(340,111,340,700);
-  delay(1000);
 }
 
 void adjustment(){
