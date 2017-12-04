@@ -6,6 +6,7 @@ float temperature = 0;
 int T_LB = 25;
 int T_UB = 35;
 float getTemperature(int pinNumber);
+long currentTime = 0;
 
 void setup()
 {
@@ -28,9 +29,11 @@ void loop()
     digitalWrite(heaterOutputPin, LOW); //turn heater off
   }
   
-  Serial.println(temperature);
-  delay(200);
-  
+  if(millis()-currentTime > 500) 
+  {
+    Serial.println(temperature);
+    currentTime = millis();
+  }
   //Stirring and pH code:
   
 }
