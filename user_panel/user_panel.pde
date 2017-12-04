@@ -20,6 +20,9 @@ void setup() {
 
   cp5.addButton("Default").setPosition(420, 330).setSize(100, 35).setFont(createFont("arial", 17)).setColorLabel(0)
     .setColorBackground(0XFFABB2B9).setColorForeground(0XFF5499C7);
+  
+  num1="25";
+  num2="35";
 }
 
 void Change() {
@@ -44,6 +47,8 @@ void draw() {
   title();
   dataDisplay();
   record();
+  println(num1);
+  println(num2);
 }  
 
 void title() {
