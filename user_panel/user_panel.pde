@@ -1,23 +1,13 @@
 import controlP5.*;
-import processing.serial.*;
 
 ControlP5 cp5;
 
-Serial myPort;
-FloatList temp;
-FloatList ph;
-IntList stirSpeed;
 String num1, num2;
 int x=910, time_y=190, temp_y=210, str_y=230, ph_y=250, time=0, i=0, line=0;
 int[] data_time= {0, 0, 0, 0, 0};
+long currentTime = 0;
 
 void setup() {
-  temp = new FloatList();
-  ph = new FloatList();
-  stirSpeed = new IntList();
-  size(1280,680);
-  String portName = "/dev/tty.uart-42FF54D1370E440F";
-  myPort = new Serial(this, portName, 9600);
   size(1280, 680);
   cp5 = new ControlP5(this);
   cp5.addTextfield("1").setPosition(450, 255).setSize(68, 40).setFont(createFont("arial", 26)).setColor(0)
@@ -84,16 +74,10 @@ void title() {
 }
 
 void dataDisplay() {
-  getValues();
   stroke(150);
   rect(50, 250, 250, 50, 10, 10, 10, 10);
   rect(50, 350, 250, 50, 10, 10, 10, 10);
   rect(50, 450, 250, 50, 10, 10, 10, 10);
-  fill(30);
-  textSize(30);
-  text(String.format("%.1f",temp.get(temp.size()-1)), 135, 290);
-  //text(String.format("%.1f",ph.get(ph.size()-1)), 135, 440);
-  //text(stirSpeed.get(stirSpeed.size()-1), 135, 590);
   line(340, 111, 340, 700);
 }
 
@@ -112,14 +96,16 @@ void record() {
   fill(255);
   textSize(16);
   text("Log:", x, 150);
-  delay(125);
+  if (millis()-currentTime>1000){
   i+=1;
-  if (((i-80)%400)==0) {
+  if (((i-10)%50)==0) {
     line=0;
   }
-  if ((i%80)==0) {
+  if ((i%10)==0) {
     line+=1;
     time+=10;
+  }
+  currentTime=millis();
   }
   if(line==1){
     data_time[0]=time;
@@ -165,31 +151,5 @@ void record() {
     text("-Temperature is "+"°C", x, temp_y+400);
     text("-Stirring Speed is "+"rpm", x, str_y+400);
     text("-pH Value is ", x, ph_y+400);
-  }
-}
-
-void getValues(){
-  String val = "";
-  if ( myPort.available() > 0) {  // If data is available,
-    val = myPort.readStringUntil('\n');
-    print(val);
-    if (val != null)
-    {
-      temp.append(int(trim(val)));
-      println(temp);
-      /*String[] val1 = split(val, ',');
-      int[] val2 = int(trim(val1));
-      
-      println(val1[0]);
-      println(val1[1]);
-      println(val1[2]);
-      temp.append(val2[0]);
-      ph.append(val2[1]);
-      stirSpeed.append(val2[2]);
-    
-      println(temp);
-      println(ph);
-      println(stirSpeed);*/
-    }
   }
 }
