@@ -5,6 +5,7 @@ ControlP5 cp5;
 String num1, num2;
 int x=910, time_y=190, temp_y=210, str_y=230, ph_y=250, time=0, i=0, line=0;
 int[] data_time= {0, 0, 0, 0, 0};
+long currentTime = 0;
 
 void setup() {
   size(1280, 680);
@@ -95,14 +96,16 @@ void record() {
   fill(255);
   textSize(16);
   text("Log:", x, 150);
-  delay(125);
+  if (millis()-currentTime>1000){
   i+=1;
-  if (((i-80)%400)==0) {
+  if (((i-10)%50)==0) {
     line=0;
   }
-  if ((i%80)==0) {
+  if ((i%10)==0) {
     line+=1;
     time+=10;
+  }
+  currentTime=millis();
   }
   if(line==1){
     data_time[0]=time;
