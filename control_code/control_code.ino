@@ -3,8 +3,8 @@
 const int thermistorInputPin = 5;
 const int heaterOutputPin = 6; 
 float temperature = 0;
-int T_LB = 25;
-int T_UB = 35;
+float T_LB = 25.0;
+float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
 
@@ -29,13 +29,19 @@ void loop()
     digitalWrite(heaterOutputPin, LOW); //turn heater off
   }
   
+  //read LB and UB
+  T_LB = (float)Serial.read()
+  T_UB = (float)Serial.read()
+  
+  //Stirring and pH code:
+  //--------------------------------
+  
   if(millis()-currentTime > 500) 
   {
-    Serial.println(temperature);
+    //the final string we print:
+    Serial.println(temperature); 
     currentTime = millis();
-  }
-  //Stirring and pH code:
-  
+  }  
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
