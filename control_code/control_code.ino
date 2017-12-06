@@ -84,11 +84,7 @@ void loop()
     analogWrite(motorPin, power); // maintain current motor speed
   }
   
-  Serial.print("T_LB = ");
   Serial.println(T_LB);
-  Serial.print("T_UB = ");
-  Serial.println(T_UB);
-  delay(1000);
 
 
   //pH code here -----------------
