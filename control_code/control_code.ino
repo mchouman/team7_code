@@ -8,6 +8,8 @@ float T_LB = 25.0;
 float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
+float av = 0;
+int changed = 0; //used when adjusting values
 
 //stirring
 const int motorPin = 14;
@@ -58,8 +60,13 @@ void loop()
   //read LB and UB
   while (Serial.available() > 0)
  { 
-    T_LB = (float)Serial.parseInt();
-    T_UB = (float)Serial.parseInt();
+    av = (float)Serial.read();
+    changed++;
+    if(changed != 0)
+    {
+      T_LB = av - 5;
+      T_UB = av + 5;
+    }
  } 
   //Stirring code:
   if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
@@ -81,6 +88,7 @@ void loop()
   Serial.println(T_LB);
   Serial.print("T_UB = ");
   Serial.println(T_UB);
+  delay(1000);
 
 
   //pH code here -----------------
