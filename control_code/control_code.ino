@@ -57,13 +57,6 @@ void loop()
   }
   
   //read LB and UB
-<<<<<<< HEAD
-  if (Serial.available() > 0)
-  {
-    T_LB = (float)Serial.parseInt();
-    T_UB = (float)Serial.parseInt();
-  }
-=======
   //  T_LB = (float)Serial.read()
   //  T_UB = (float)Serial.read()
   
@@ -86,20 +79,10 @@ void loop()
   Serial.println(rpmCurrent);
 
   //pH code here -----------------
->>>>>>> ba85b4e4d8f9968c7d49f27e2f2238824bae7931
   
   
   //the final string we print:
-<<<<<<< HEAD
-//  Serial.print("T_LB = ");
-//  Serial.println(T_LB);
-//  Serial.print("T_UB = ");
-//  Serial.println(T_UB); 
-
-  Serial.println(T_LB);
-=======
   //Serial.println(temperature); 
->>>>>>> ba85b4e4d8f9968c7d49f27e2f2238824bae7931
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
