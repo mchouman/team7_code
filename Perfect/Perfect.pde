@@ -3,10 +3,11 @@ import controlP5.*;
 ControlP5 cp5;
 
 String num1, num2;
-int x=910, time_y=190, temp_y=210, str_y=230, ph_y=250, time=0, time2=0, i=0, ii=0, line=0, key0=1, key1=0, key2=0, key3=0, key4=0;
+int x=910, time_y=190, temp_y=210, str_y=230, ph_y=250, time=0, time2=0, i=0, ii=0, line=0, key0=1, key1=0, key2=0, key3=0, key4=0, stirs=0;
+Float temps=0.00, phs=0.0;
 int[] data_time= {0, 0, 0, 0, 0}, stir_list={0,0,0,0,0};
 long currentTime = 0, storeTime=0;
-Float[] temp_list={0.00,0.00,0.00,0.00,0.00}, pH_list={0.0,0.0,0.0,0.0,0.0};
+Float[] temp_list={0.00,0.00,0.00,0.00,0.00}, pH_list={0.0,0.0,0.0,0.0,0.0}, input_list={0.00, 0.00, 0.00};
 Table table;
 
 
@@ -50,6 +51,7 @@ void draw() {
   adjustment();
   title();
   dataDisplay();
+  store();
   record();
   println(num1);
   println(num2);
@@ -97,24 +99,24 @@ void store(){
   if ((millis()-storeTime)>9999){
     ii=1;
     if(key0==1&&ii==1){
-      temp_list[0];
-      pH_list[0];
-      stir_list[0];
+      temp_list[0]=temps;
+      pH_list[0]=phs;
+      stir_list[0]=stirs;
       time2+=10;  
       TableRow newRow = table.addRow();
       newRow.setInt("Time(s)", time2);
       newRow.setFloat("Temperature(°C)",temp_list[0]);
       newRow.setInt("Stirring Speed(rpm)",stir_list[0]);
       newRow.setFloat("pH Value",pH_list[0]);
-      saveTable(table,"filelocation.csv");
+      saveTable(table,".csv");
       key0=0;
       key1=1;
       ii=0;
     }
     if(key1==1&&ii==1){
-      temp_list[1];
-      pH_list[1];
-      stir_list[1];
+      temp_list[1]=temps;
+      pH_list[1]=phs;
+      stir_list[1]=stirs;
       time2+=10;  
       TableRow newRow = table.addRow();
       newRow.setInt("Time(s)", time2);
@@ -127,9 +129,9 @@ void store(){
       ii=0;
     }
     if(key2==1&&ii==1){
-      temp_list[2];
-      pH_list[2];
-      stir_list[2];
+      temp_list[2]=temps;
+      pH_list[2]=phs;
+      stir_list[2]=stirs;
       time2+=10;  
       TableRow newRow = table.addRow();
       newRow.setInt("Time(s)", time2);
@@ -142,9 +144,9 @@ void store(){
       ii=0;
     }
     if(key3==1&&ii==1){
-      temp_list[3];
-      pH_list[3];
-      stir_list[3];
+      temp_list[3]=temps;
+      pH_list[3]=phs;
+      stir_list[3]=stirs;
       time2+=10;  
       TableRow newRow = table.addRow();
       newRow.setInt("Time(s)", time2);
@@ -157,9 +159,9 @@ void store(){
       ii=0;
     }
     if(key4==1&&ii==1){
-      temp_list[4];
-      pH_list[4];
-      stir_list[4];
+      temp_list[4]=temps;
+      pH_list[4]=phs;
+      stir_list[4]=stirs;
       time2+=10;  
       TableRow newRow = table.addRow();
       newRow.setInt("Time(s)", time2);
