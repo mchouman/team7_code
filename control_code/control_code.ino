@@ -1,5 +1,6 @@
 #include <math.h>
 
+//heating
 const int thermistorInputPin = 5;
 const int heaterOutputPin = 6; 
 float temperature = 0;
@@ -8,11 +9,39 @@ float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
 
+//stirring
+const int motorPin = 14;
+const int sensorPin = 5;
+int rpmLow = 500;
+int rpmHigh = 1500;
+int rpmMid;
+int rpmCurrent;
+long lastMillis;
+float power; 
+
 void setup()
 {
   Serial.begin(9600); 
-  
+
+  // Heating
   pinMode(heaterOutputPin, OUTPUT); 
+
+  // Stirring
+  pinMode(motorPin, OUTPUT); // motor for 
+  pinMode(sensorPin, INPUT_PULLUP);
+  Serial.begin(9600); // baud rate 9600
+  attachInterrupt(sensorPin, updateRpm, RISING);
+  power = 0.0; //set initial motor speed to 0
+  rpmCurrent = 0; //set initial RPM to 0
+  rpmMid = (rpmHigh + rpmLow) / 2;
+  
+}
+
+// Interrupt Function to calculate actual RPM of stirrer
+void updateRpm() {
+  long oneRevolution = 2 * (millis() - lastMillis); //time taken for one revolution (in milliseconds)
+  lastMillis = millis(); 
+  rpmCurrent = 60000 / oneRevolution; //converting into RPM
 }
 
 void loop()
@@ -30,14 +59,32 @@ void loop()
   }
   
   //read LB and UB
-//  T_LB = (float)Serial.read()
-//  T_UB = (float)Serial.read()
+  //  T_LB = (float)Serial.read()
+  //  T_UB = (float)Serial.read()
   
-  //Stirring and pH code:
-  //--------------------------------
+  //Stirring code:
+  if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
+  {
+    power += 0.05; //increase speed
+    analogWrite(motorPin, power);
+  }
+  else if (rpmCurrent > rpmMid + 100 && power > 0) //if too fast
+  {
+    power -= 0.05; //decrease speed
+    analogWrite(motorPin, power);
+  }
+  else
+  {
+    analogWrite(motorPin, power); // maintain current motor speed
+  }
+
+  //Serial.println(rpmCurrent);
+
+  //pH code
+  
   
   //the final string we print:
-  Serial.println(temperature); 
+//  Serial.println(temperature); 
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
