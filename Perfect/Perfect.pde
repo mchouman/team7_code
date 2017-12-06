@@ -38,17 +38,11 @@ void setup() {
 void Change() {
   num1= cp5.get(Textfield.class, "1").getText();
   num2= cp5.get(Textfield.class, "2").getText();
-  print(num1);
-  println();
-  print(num2);
-  println();
 }  
 
 void Default() {
-  print("25");
-  println();
-  print("35");
-  println();
+  num1="25";
+  num2="35";
 }
 
 void draw() {
