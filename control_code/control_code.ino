@@ -1,6 +1,7 @@
 #include <math.h>
 
-const int thermistorInputPin = 5;
+//heating
+const int thermistorInputPin = 10;
 const int heaterOutputPin = 6; 
 float temperature = 0;
 float T_LB = 25.0;
@@ -8,11 +9,37 @@ float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
 
+//stirring
+const int motorPin = 14;
+const int sensorPin = 5;
+int rpmLow = 1000;
+int rpmHigh = 2000;
+int rpmMid;
+int rpmCurrent;
+long lastMillis;
+float power; 
+
 void setup()
 {
   Serial.begin(9600); 
-  
+
+  // Heating
   pinMode(heaterOutputPin, OUTPUT); 
+
+  // Stirring
+  pinMode(motorPin, OUTPUT); // motor for stirring
+  pinMode(sensorPin, INPUT_PULLUP); //sensor for measuring RPM
+  attachInterrupt(sensorPin, updateRpm, RISING);
+  power = 0.0; //set initial motor speed to 0
+  rpmCurrent = 0; //set initial RPM to 0
+  rpmMid = (rpmHigh + rpmLow) / 2;
+}
+
+// Interrupt Function to calculate actual RPM of stirrer
+void updateRpm() {
+  long oneRevolution = 2 * (millis() - lastMillis); //time taken for one revolution (in milliseconds)
+  lastMillis = millis(); 
+  rpmCurrent = 60000 / oneRevolution; //converting into RPM
 }
 
 void loop()
@@ -30,22 +57,49 @@ void loop()
   }
   
   //read LB and UB
+<<<<<<< HEAD
   if (Serial.available() > 0)
   {
     T_LB = (float)Serial.parseInt();
     T_UB = (float)Serial.parseInt();
   }
+=======
+  //  T_LB = (float)Serial.read()
+  //  T_UB = (float)Serial.read()
   
-  //Stirring and pH code:
-  //--------------------------------
+  //Stirring code:
+  if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
+  {
+    power += 0.025; //increase speed in small steps
+    analogWrite(motorPin, power);
+  }
+  else if (rpmCurrent > rpmMid + 100 && power > 0) //if too fast
+  {
+    power -= 0.025; //decrease speed in small steps
+    analogWrite(motorPin, power);
+  }
+  else
+  {
+    analogWrite(motorPin, power); // maintain current motor speed
+  }
+
+  Serial.println(rpmCurrent);
+
+  //pH code here -----------------
+>>>>>>> ba85b4e4d8f9968c7d49f27e2f2238824bae7931
+  
   
   //the final string we print:
+<<<<<<< HEAD
 //  Serial.print("T_LB = ");
 //  Serial.println(T_LB);
 //  Serial.print("T_UB = ");
 //  Serial.println(T_UB); 
 
   Serial.println(T_LB);
+=======
+  //Serial.println(temperature); 
+>>>>>>> ba85b4e4d8f9968c7d49f27e2f2238824bae7931
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
