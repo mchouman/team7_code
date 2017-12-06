@@ -30,14 +30,22 @@ void loop()
   }
   
   //read LB and UB
-//  T_LB = (float)Serial.read()
-//  T_UB = (float)Serial.read()
+  if (Serial.available() > 0)
+  {
+    T_LB = (float)Serial.parseInt();
+    T_UB = (float)Serial.parseInt();
+  }
   
   //Stirring and pH code:
   //--------------------------------
   
   //the final string we print:
-  Serial.println(temperature); 
+//  Serial.print("T_LB = ");
+//  Serial.println(T_LB);
+//  Serial.print("T_UB = ");
+//  Serial.println(T_UB); 
+
+  Serial.println(T_LB);
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
