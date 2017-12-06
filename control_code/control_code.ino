@@ -30,8 +30,8 @@ void loop()
   }
   
   //read LB and UB
-  T_LB = (float)Serial.read()
-  T_UB = (float)Serial.read()
+//  T_LB = (float)Serial.read()
+//  T_UB = (float)Serial.read()
   
   //Stirring and pH code:
   //--------------------------------
