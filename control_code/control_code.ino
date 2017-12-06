@@ -36,12 +36,8 @@ void loop()
   //Stirring and pH code:
   //--------------------------------
   
-  if(millis()-currentTime > 500) 
-  {
-    //the final string we print:
-    Serial.println(temperature); 
-    currentTime = millis();
-  }  
+  //the final string we print:
+  Serial.println(temperature); 
 }
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
