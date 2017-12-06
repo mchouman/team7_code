@@ -11,7 +11,7 @@ long currentTime = 0;
 
 //stirring
 const int motorPin = 14;
-const int sensorPin = 5;
+const int sensorPin = 2;
 int rpmLow = 500;
 int rpmHigh = 1500;
 int rpmMid;
