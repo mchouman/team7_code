@@ -1,7 +1,7 @@
 #include <math.h>
 
 //heating
-const int thermistorInputPin = 10;
+const int thermistorInputPin = 2;
 const int heaterOutputPin = 6; 
 float temperature = 0;
 float T_LB = 25.0;
@@ -22,7 +22,6 @@ float power;
 void setup()
 {
   Serial.begin(9600); 
-
   // Heating
   pinMode(heaterOutputPin, OUTPUT); 
 
@@ -57,9 +56,11 @@ void loop()
   }
   
   //read LB and UB
-  //  T_LB = (float)Serial.read()
-  //  T_UB = (float)Serial.read()
-  
+  while (Serial.available() > 0)
+ { 
+    T_LB = (float)Serial.parseInt();
+    T_UB = (float)Serial.parseInt();
+ } 
   //Stirring code:
   if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
   {
@@ -75,11 +76,14 @@ void loop()
   {
     analogWrite(motorPin, power); // maintain current motor speed
   }
+  
+  Serial.print("T_LB = ");
+  Serial.println(T_LB);
+  Serial.print("T_UB = ");
+  Serial.println(T_UB);
 
-  Serial.println(rpmCurrent);
 
   //pH code here -----------------
-  
   
   //the final string we print:
   //Serial.println(temperature); 
