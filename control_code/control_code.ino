@@ -91,7 +91,7 @@ void loop()
   
   //the final string we print:
   //Serial.println(temperature); 
-}
+}          
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
 //https://www.allaboutcircuits.com/projects/measuring-temperature-with-an-ntc-thermistor/
