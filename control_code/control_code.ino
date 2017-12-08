@@ -63,21 +63,17 @@ void loop()
     int rawInput = Serial.parseInt();
     char cc = Serial.read();
     
-    if (cc == 'a')
+    if (cc == 'b')
     {
       av_T = rawInput;
     }
-    else if(cc == 'b')
+    else if(cc == 'a')
     {
       rpmMid = rawInput;
     }
     
-    changed++;
-    if(changed != 0)
-    {
-      T_LB = av_T - 5;
-      T_UB = av_T+ 5;
-    }
+    T_LB = av_T - 5;
+    T_UB = av_T + 5;    
  } 
   //Stirring code:
   if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
@@ -95,10 +91,10 @@ void loop()
     analogWrite(motorPin, power); // maintain current motor speed
   }
   
-  Serial.println("T_LB = ");
-  Serial.print(T_LB);
-  Serial.println("rpmMid = ");
-  Serial.print(rpmMid);
+  Serial.print("tlb = ");
+  Serial.println(T_LB);
+  Serial.print("rpmMid = ");
+  Serial.println(rpmMid);
 
 
   //pH code here -----------------
