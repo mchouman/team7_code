@@ -8,8 +8,8 @@ float T_LB = 25.0;
 float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
-float av = 0;
 int changed = 0; //used when adjusting values
+int av_T = 0;
 
 //stirring
 const int motorPin = 14;
@@ -60,12 +60,23 @@ void loop()
   //read LB and UB
   while (Serial.available() > 0)
  { 
-    av = (float)Serial.read();
+    int rawInput = Serial.parseInt();
+    char cc = Serial.read();
+    
+    if (cc == 'a')
+    {
+      av_T = rawInput;
+    }
+    else if(cc == 'b')
+    {
+      rpmMid = rawInput;
+    }
+    
     changed++;
     if(changed != 0)
     {
-      T_LB = av - 5;
-      T_UB = av + 5;
+      T_LB = av_T - 5;
+      T_UB = av_T+ 5;
     }
  } 
   //Stirring code:
@@ -84,7 +95,10 @@ void loop()
     analogWrite(motorPin, power); // maintain current motor speed
   }
   
-  Serial.println(temperature);
+  Serial.println("T_LB = ");
+  Serial.print(T_LB);
+  Serial.println("rpmMid = ");
+  Serial.print(rpmMid);
 
 
   //pH code here -----------------
