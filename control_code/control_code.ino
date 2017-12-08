@@ -1,7 +1,7 @@
 #include <math.h>
 
 //heating
-const int thermistorInputPin = 2;
+const int thermistorInputPin = 7;
 const int heaterOutputPin = 6; 
 float temperature = 0;
 float T_LB = 25.0;
@@ -84,7 +84,7 @@ void loop()
     analogWrite(motorPin, power); // maintain current motor speed
   }
   
-  Serial.println(T_LB);
+  Serial.println(temperature);
 
 
   //pH code here -----------------
