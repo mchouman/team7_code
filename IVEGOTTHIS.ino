@@ -1,8 +1,8 @@
 #include <math.h>
 #define OFFSET 1.18
-int SensorPin= 6;    //Input pH sensor pin number     //pH meter Analog output to Arduino Analog Input 0
+int SensorPin= 6;    //Analog input pH sensor pin number    
 float avgValue;  //Store the average value of the sensor feedback
-float mvValue, ph, consts;
+float mvValue, ph, consts, tempo;
 int buf[10];
 double const R=8.314510;
 double const F=9.6485309*pow(10,4);
@@ -27,9 +27,9 @@ void loop()
     {
       if(buf[i]>buf[j])
       {
-        temp=buf[i];
+        tempo=buf[i];
         buf[i]=buf[j];
-        buf[j]=temp;
+        buf[j]=tempo;
       }
     }
   }
@@ -41,7 +41,7 @@ void loop()
     if (avgValue>512)               //keep 0 to 512 as positive mV respectively
      avgValue=0-(avgValue-512);    //converts 512 to 1024 TO GIVE 0 TO -512mV respectively
     temp=(float) temp+274.15;      //converting degree to kelvin
-    ph=(float)(0-mvValue)/(OFFSET*consts*(temp/kel)+7;  //convert the mV to pH  
+    ph=(float)(0-mvValue)/(OFFSET*consts*(temp/kel))+7;  //convert the mV to pH  
   }
   
   Serial.println("PH: ");
