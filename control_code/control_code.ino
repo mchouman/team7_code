@@ -8,7 +8,6 @@ float T_LB = 25.0;
 float T_UB = 35.0;
 float getTemperature(int pinNumber);
 long currentTime = 0;
-int changed = 0; //used when adjusting values
 int av_T = 0;
 
 //stirring
@@ -21,9 +20,21 @@ int rpmCurrent;
 long lastMillis;
 float power; 
 
+//pH
+#define OFFSET 1.18
+int SensorPin= 2;    //Analog Input pH sensor pin number
+float avgValue;  //Store the average value of the sensor feedback
+float mvValue, ph, consts, tempo;
+int buf[10];
+double const R=8.314510;
+double const F=9.6485309*pow(10,4);
+float temp=25.0;
+float kel=273.15;
+
 void setup()
 {
   Serial.begin(9600); 
+  
   // Heating
   pinMode(heaterOutputPin, OUTPUT); 
 
@@ -34,6 +45,10 @@ void setup()
   power = 0.0; //set initial motor speed to 0
   rpmCurrent = 0; //set initial RPM to 0
   rpmMid = (rpmHigh + rpmLow) / 2;
+  
+  //pH
+  pinMode(12,OUTPUT); 
+  pinMode(13,OUTPUT);
 }
 
 // Interrupt Function to calculate actual RPM of stirrer
@@ -75,6 +90,7 @@ void loop()
     T_LB = av_T - 5;
     T_UB = av_T + 5;    
  } 
+ 
   //Stirring code:
   if (rpmCurrent < rpmMid - 100 && power < 255) //if too slow
   {
@@ -91,16 +107,54 @@ void loop()
     analogWrite(motorPin, power); // maintain current motor speed
   }
   
-  Serial.print("tlb = ");
-  Serial.println(T_LB);
-  Serial.print("rpmMid = ");
-  Serial.println(rpmMid);
-
-
-  //pH code here -----------------
+  //pH code:
+  for (int i=0;i<10;i++)       //Get 10 sample value from the sensor for smooth the value
+  { 
+    buf[i]=analogRead(SensorPin);
+    delay(10);
+  }
+  for (int i=0;i<9;i++)        //sort the analog from small to large
+  {
+    for (int j=i+1;j<10;j++)
+    {
+      if(buf[i]>buf[j])
+      {
+        tempo=buf[i];
+        buf[i]=buf[j];
+        buf[j]=tempo;
+      }
+    }
+  }
+  consts=58.167;
+  avgValue=0;
+  for(int i=2;i<8;i++) {                      //take the average value of 6 center sample
+    avgValue+=buf[i];
+    avgValue = (avgValue/6);
+    if (avgValue>512)               //keep 0 to 512 as positive mV respectively
+     avgValue=0-(avgValue-512);    //converts 512 to 1024 TO GIVE 0 TO -512mV respectively
+    temp=(float) temp+274.15;      //converting degree to kelvin
+    ph=(float)(0-avgValue)/(OFFSET*consts*(temp/kel))+7;  //convert the mV to pH  
+  }
   
-  //the final string we print:
-  //Serial.println(temperature); 
+  if (ph<4) {   
+    digitalWrite(13, HIGH); 
+    digitalWrite(12, LOW);
+  }
+  else if (ph>6) {
+    digitalWrite(12, HIGH);
+    digitalWrite(13, LOW);
+  }
+  else {
+    digitalWrite(12,LOW);
+    digitalWrite(13,LOW);
+  }
+  
+  //The final string we print that goes to the UI:
+  Serial.print(temperature);
+  Serial.print(",");
+  Serial.print(rpmCurrent);
+  Serial.print(",");
+  Serial.println(ph);
 }          
 
 //equation to calculate temperature (using the thermistor given) is taken from the following website:
