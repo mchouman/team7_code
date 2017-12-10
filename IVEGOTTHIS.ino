@@ -1,6 +1,6 @@
 #include <math.h>
 #define OFFSET 1.18
-int SensorPin= 6;    //Analog input pH sensor pin number    
+int SensorPin= 6;    //Analog Input pH sensor pin number
 float avgValue;  //Store the average value of the sensor feedback
 float mvValue, ph, consts, tempo;
 int buf[10];
@@ -41,7 +41,7 @@ void loop()
     if (avgValue>512)               //keep 0 to 512 as positive mV respectively
      avgValue=0-(avgValue-512);    //converts 512 to 1024 TO GIVE 0 TO -512mV respectively
     temp=(float) temp+274.15;      //converting degree to kelvin
-    ph=(float)(0-mvValue)/(OFFSET*consts*(temp/kel))+7;  //convert the mV to pH  
+    ph=(float)(0-avgValue)/(OFFSET*consts*(temp/kel))+7;  //convert the mV to pH  
   }
   
   Serial.println("PH: ");
