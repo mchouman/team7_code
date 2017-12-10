@@ -13,8 +13,8 @@ int av_T = 0;
 //stirring
 const int motorPin = 14;
 const int sensorPin = 5;
-int rpmLow = 1000;
-int rpmHigh = 2000;
+int rpmLow = 500;
+int rpmHigh = 1500;
 int rpmMid;
 int rpmCurrent;
 long lastMillis;
@@ -72,7 +72,7 @@ void loop()
     digitalWrite(heaterOutputPin, LOW); //turn heater off
   }
   
-  //read LB and UB
+  //read data from processing for set-point adjustment
   while (Serial.available() > 0)
  { 
     int rawInput = Serial.parseInt();
