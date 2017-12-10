@@ -10,7 +10,8 @@ float temp=25.0;
 float kel=273.15;
 void setup()
 {
-  pinMode(12,OUTPUT);  
+  pinMode(12,OUTPUT); 
+  pinMode(13,OUTPUT);
   Serial.begin(9600);  
   Serial.println("Ready");    //Test the serial monitor
 }
