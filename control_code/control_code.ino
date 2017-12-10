@@ -111,7 +111,6 @@ void loop()
   for (int i=0;i<10;i++)       //Get 10 sample value from the sensor for smooth the value
   { 
     buf[i]=analogRead(SensorPin);
-    delay(10);
   }
   for (int i=0;i<9;i++)        //sort the analog from small to large
   {
